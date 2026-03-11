@@ -9,9 +9,10 @@ export default function CommentForm({ reviewId }: { reviewId: string }) {
 
     async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
+        const formEl = e.currentTarget;
         setSubmitting(true);
 
-        const form = new FormData(e.currentTarget);
+        const form = new FormData(formEl);
         const res = await fetch(`/api/reviews/${reviewId}/comments`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -19,7 +20,7 @@ export default function CommentForm({ reviewId }: { reviewId: string }) {
         });
 
         if (res.ok) {
-            e.currentTarget.reset();
+            formEl.reset();
             router.refresh();
         } else {
             alert("Failed to post comment");
